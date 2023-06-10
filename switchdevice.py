@@ -85,10 +85,6 @@ class SwitchDevice:
     @connected.setter
     def connected(self, connected: bool):
         self._connected = connected
-        #self.logger.info(f'Device connection: {connected}')
-        """ Put here the initialization of the pinouts and
-        give some warning if you want disconnect when some
-        switch are close"""
     
     #    
     # GET, SET METHOD (need more than self parameter)
@@ -128,9 +124,7 @@ class SwitchDevice:
     
     def set_switchstate(self, key, state):
         self._switchstate[list(self._switchstate)[key]] = state
-        #self.logger.info(f'Switch {list(self._switchstate)[key]}({key}): {state}')
-        """Put here some warnings if you want to put a switch in
-        a state in which it is already"""
+        
     
     def get_switchvalue(self, key) -> int:
         res = int(self._switchstate[list(self._switchstate)[key]])
@@ -139,8 +133,6 @@ class SwitchDevice:
 
     def set_switchvalue(self, key, value):
         self._switchstate[list(self._switchstate)[key]] = bool(value)
-        #self.logger.info(f'Switch {list(self._switchstate)[key]}({key}): {value}')
-        """Put here some warnings if you want to put a switch in
-        a state in which it is already"""
+        
 
         
