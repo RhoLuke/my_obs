@@ -116,7 +116,7 @@ def to_float(str: str) -> float:
 # missing. In any case, raise a 400 BAD REQUEST. Optional
 # caseless (mostly for the ClientID and ClientTransactionID)
 # ---------------------------------------------------------
-def get_request_field(name: str, req: Request, caseless: bool = False, default: str = None) -> str:
+def get_request_field(name: str, req: Request, caseless: bool = True, default: str = None) -> str:
     bad_desc = f'Missing, empty, or misspelled parameter "{name}"'
     lcName = name.lower()
     if req.method == 'GET':
