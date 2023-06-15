@@ -165,7 +165,9 @@ class canwrite:
                             NotConnectedException()).json
             return
         
-        idstr = get_request_field('Id', req)      # Raises 400 bad request if missing
+        idstr = get_request_field('ID', req) # Raises 400 bad request if missing
+        #if len(idstr) == 0:
+        #         idstr = get_request_field('ID', req) # Raises 400 bad request if missing
         try:
             id = to_int(idstr)
             if id < 0 or id >= swt_dev.maxswitch:
@@ -195,7 +197,9 @@ class getswitch:
                             NotConnectedException()).json
             return
         
-        idstr = get_request_field('Id', req)      # Raises 400 bad request if missing
+        idstr = get_request_field('ID', req)      # Raises 400 bad request if missing
+        #if len(idstr) == 0:
+        #         idstr = get_request_field('ID', req) # Raises 400 bad request if missing
         try:
             id = to_int(idstr)
             if id < 0 or id >= swt_dev.maxswitch:
@@ -209,7 +213,23 @@ class getswitch:
         
         try:
             # ----------------------
-            val = swt_dev.get_switchstate(id)
+            if id == 0:
+                val = swt_dev.roof_state
+            elif id == 1:
+                val = swt_dev.weather_state
+            elif id == 2:
+                val = swt_dev.mount_state
+            elif id == 3:
+                val = swt_dev.camera_state
+            elif id == 4:
+                val = swt_dev.astropc_state
+            elif id == 5:
+                val = swt_dev.security_state
+            elif id == 6:
+                val = swt_dev.light_state
+            elif id == 7:
+                val = swt_dev.flat_state
+            #val = swt_dev.get_switchstate(id)
             # ----------------------
             resp.text = PropertyResponse(val, req).json
         except Exception as ex:
@@ -225,7 +245,9 @@ class getswitchdescription:
                             NotConnectedException()).json
             return
         
-        idstr = get_request_field('Id', req)      # Raises 400 bad request if missing
+        idstr = get_request_field('ID', req)      # Raises 400 bad request if missing
+        #if len(idstr) == 0:
+        #         idstr = get_request_field('ID', req) # Raises 400 bad request if missing
         try:
             id = to_int(idstr)
             if id < 0 or id >= swt_dev.maxswitch:
@@ -255,7 +277,9 @@ class getswitchname:
                             NotConnectedException()).json
             return
         
-        idstr = get_request_field('Id', req)      # Raises 400 bad request if missing
+        idstr = get_request_field('ID', req)      # Raises 400 bad request if missing
+        #if len(idstr) == 0:
+        #         idstr = get_request_field('ID', req) # Raises 400 bad request if missing
         try:
             id = to_int(idstr)
             if id < 0 or id >= swt_dev.maxswitch:
@@ -285,7 +309,9 @@ class getswitchvalue:
                             NotConnectedException()).json
             return
         
-        idstr = get_request_field('Id', req)      # Raises 400 bad request if missing
+        idstr = get_request_field('ID', req)      # Raises 400 bad request if missing
+        #if len(idstr) == 0:
+        #         idstr = get_request_field('ID', req) # Raises 400 bad request if missing
         try:
             id = to_int(idstr)
             if id < 0 or id >= swt_dev.maxswitch:
@@ -299,7 +325,23 @@ class getswitchvalue:
         
         try:
             # ----------------------
-            val = int(swt_dev.get_switchstate(id))
+            if id == 0:
+                val = swt_dev.roof_value
+            elif id == 1:
+                val = swt_dev.weather_value
+            elif id == 2:
+                val = swt_dev.mount_value
+            elif id == 3:
+                val = swt_dev.camera_value
+            elif id == 4:
+                val = swt_dev.astropc_value
+            elif id == 5:
+                val = swt_dev.security_value
+            elif id == 6:
+                val = swt_dev.light_value
+            elif id == 7:
+                val = swt_dev.flat_value
+            #val = swt_dev.get_switchvalue(id)
             # ----------------------
             resp.text = PropertyResponse(val, req).json
         except Exception as ex:
@@ -315,7 +357,9 @@ class minswitchvalue:
                             NotConnectedException()).json
             return
         
-        idstr = get_request_field('Id', req)      # Raises 400 bad request if missing
+        idstr = get_request_field('ID', req)      # Raises 400 bad request if missing
+        #if len(idstr) == 0:
+        #         idstr = get_request_field('ID', req) # Raises 400 bad request if missing
         try:
             id = to_int(idstr)
             if id < 0 or id >= swt_dev.maxswitch:
@@ -345,7 +389,9 @@ class maxswitchvalue:
                             NotConnectedException()).json
             return
         
-        idstr = get_request_field('Id', req)      # Raises 400 bad request if missing
+        idstr = get_request_field('ID', req)      # Raises 400 bad request if missing
+        #if len(idstr) == 0:
+        #         idstr = get_request_field('ID', req) # Raises 400 bad request if missing
         try:
             id = to_int(idstr)
             if id < 0 or id >= swt_dev.maxswitch:
@@ -374,7 +420,9 @@ class setswitch:
             resp.text = PropertyResponse(None, req,
                             NotConnectedException()).json
             return
-        idstr = get_request_field('Id', req)      # Raises 400 bad request if missing
+        idstr = get_request_field('ID', req)      # Raises 400 bad request if missing
+        #if len(idstr) == 0:
+        #         idstr = get_request_field('ID', req) # Raises 400 bad request if missing
         try:
             id = to_int(idstr)
             if id < 0 or id >= swt_dev.maxswitch:
@@ -392,7 +440,23 @@ class setswitch:
         try:
             # -----------------------------
             ### DEVICE OPERATION(PARAM) ###
-            swt_dev.set_switchstate(id, state)
+            if id == 0:
+                swt_dev.roof_state = state
+            elif id == 1:
+                swt_dev.weather_state = state
+            elif id == 2:
+                swt_dev.mount_state = state
+            elif id == 3:
+                swt_dev.camera_state = state
+            elif id == 4:
+                swt_dev.astropc_state = state
+            elif id == 5:
+                swt_dev.security_state = state
+            elif id == 6:
+                swt_dev.light_state = state
+            elif id == 7:
+                swt_dev.flat_state = state
+            #swt_dev.set_switchstate(id, state)
             # -----------------------------
             resp.text = MethodResponse(req).json
         except Exception as ex:
@@ -421,7 +485,9 @@ class setswitchname:
             resp.text = PropertyResponse(None, req,
                             NotConnectedException()).json
             return
-        idstr = get_request_field('Id', req)      # Raises 400 bad request if missing
+        idstr = get_request_field('ID', req)      # Raises 400 bad request if missing
+        #if len(idstr) == 0:
+        #         idstr = get_request_field('ID', req) # Raises 400 bad request if missing
         try:
             id = to_int(idstr)
             if id < 0 or id >= swt_dev.maxswitch:
@@ -473,7 +539,9 @@ class setswitchvalue:
             resp.text = PropertyResponse(None, req,
                             NotConnectedException()).json
             return
-        idstr = get_request_field('Id', req)      # Raises 400 bad request if missing
+        idstr = get_request_field('ID', req)      # Raises 400 bad request if missing
+        #if len(idstr) == 0:
+        #         idstr = get_request_field('ID', req) # Raises 400 bad request if missing
         try:
             id = to_int(idstr)
             if id < 0 or id >= swt_dev.maxswitch:
@@ -487,11 +555,11 @@ class setswitchvalue:
         ### RANGE CHECK AS NEEDED ###       # Raise Alpaca InvalidValueException with details!
         valuestr = get_request_field('Value', req)      # Raises 400 bad request if missing
         try:
-            value = float(valuestr)
+            value = to_float(valuestr)
             if value < 0 or value > swt_dev._maxswitchvalue:
                 resp.text = MethodResponse(req,
                                 InvalidValueException(f'The value for the switch {id} is outside the range'
-                                                       '[{swt_dev._minswitchvalue}-{swt_dev.maxswitchvalue}].')).json
+                                                       f'[{swt_dev._minswitchvalue}-{swt_dev._maxswitchvalue}].')).json
                 return
         except:
             resp.text = MethodResponse(req,
@@ -501,7 +569,23 @@ class setswitchvalue:
         try:
             # -----------------------------
             ### DEVICE OPERATION(PARAM) ###
-            swt_dev.set_switchvalue(id, value)
+            if id == 0:
+                swt_dev.roof_value = value
+            elif id == 1:
+                swt_dev.weather_value = value
+            elif id == 2:
+                swt_dev.mount_value = value
+            elif id == 3:
+                swt_dev.camera_value = value
+            elif id == 4:
+                swt_dev.astropc_value = value
+            elif id == 5:
+                swt_dev.security_value = value
+            elif id == 6:
+                swt_dev.light_value = value
+            elif id == 7:
+                swt_dev.flat_value = value
+            #swt_dev.set_switchvalue(id, value)
             # -----------------------------
             resp.text = MethodResponse(req).json
         except Exception as ex:
@@ -532,6 +616,8 @@ class switchstep:
             return
         
         idstr = get_request_field('Id', req)      # Raises 400 bad request if missing
+        if len(idstr) == 0:
+                 idstr = get_request_field('ID', req) # Raises 400 bad request if missing
         try:
             id = to_int(idstr)
             if id < 0 or id >= swt_dev.maxswitch:
