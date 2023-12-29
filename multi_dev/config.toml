@@ -1,0 +1,36 @@
+title = "Alpaca Sample Device Drivers"
+
+[network]
+ip_address = ''             # Any address
+port = 5555
+
+[server]
+location = 'Anywhere on Earth'  # Anything you want here
+verbose_driver_exceptions = true
+
+[switch]
+maxswitch = 8
+canwrite = true
+minswitchvalue = 0
+maxswitchvalue = 1
+switchstep = 1
+
+[weather]
+
+[safety]
+
+[dome]
+canfindhome = false
+canpark = false
+cansetaltitude = false
+cansetazimuth = false
+cansetpark = false
+cansetshutter = true
+canslave = false
+cansyncazimuth = false
+
+[logging]
+log_level = 'INFO'
+log_to_stdout = false
+max_size_mb = 5
+num_keep_logs = 1
