@@ -1,0 +1,8 @@
+## TO DO LIST
+1- Fare un programma genitore (tipo deamon) che ascolta i sensori ambientali e fa il log su un file di testo.
+Questo verrà poi interpellato sia da Alpaca che direttamente dal Rpi.
+
+2- Migliorare il driver del roof. Deve avere la possibilità di completare l'operazione dopo un ABORT.
+Potrebbe essere meglio creare un driver genitore, interpellato da alpaca e Rpi anche per il roof.
+Con gestione della competition, in modo tale che nessuno dei due possa interrompere l'azione dell'altro.
+Meglio ancora forse che il RPi possa prendere il controllo su Alpaca ma non viceversa.
