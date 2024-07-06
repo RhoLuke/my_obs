@@ -1,4 +1,4 @@
-import threading
+# import threading
 import RPi.GPIO as GPIO
 import os
 import time
@@ -11,8 +11,8 @@ class ROOF:
 
     def __init__(self, logger: Logger, master: bool) -> None:
         
-        self.event = threading.Event()
-        self.master = master
+#         self.event = threading.Event()
+#         self.master = master
 
         self.__class__._state: int = None #0:OPEN|1:CLOSED|2:OPENING|3:CLOSING|4:ERROR
         self.__class__._direction: bool = None #TRUE is aiming OPEN and FALSE is aiming CLOSE
@@ -109,9 +109,9 @@ class ROOF:
         no = GPIO.input(sensor['no'])
         
         if nc == True and no == False:
-            state = 'active'
-        elif nc == False and no == True:
             state = 'inactive'
+        elif nc == False and no == True:
+            state = 'active' #'inactive'
         else:
             if self.__class__._motor.isMoving:
                 self.abort()
@@ -122,14 +122,14 @@ class ROOF:
     
     def check_sensor(self) -> (bool, str):
         try:
-            GPIO.setup(self.__class__._close1['nc'], GPIO.IN)
-            GPIO.setup(self.__class__._close1['no'], GPIO.IN)
-            GPIO.setup(self.__class__._close2['nc'], GPIO.IN)
-            GPIO.setup(self.__class__._close2['no'], GPIO.IN)
-            GPIO.setup(self.__class__._open1['nc'], GPIO.IN)
-            GPIO.setup(self.__class__._open1['no'], GPIO.IN)
-            GPIO.setup(self.__class__._open2['nc'], GPIO.IN)
-            GPIO.setup(self.__class__._open2['no'], GPIO.IN)
+            GPIO.setup(self.__class__._close1['nc'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+            GPIO.setup(self.__class__._close1['no'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+            GPIO.setup(self.__class__._close2['nc'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+            GPIO.setup(self.__class__._close2['no'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+            GPIO.setup(self.__class__._open1['nc'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+            GPIO.setup(self.__class__._open1['no'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+            GPIO.setup(self.__class__._open2['nc'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+            GPIO.setup(self.__class__._open2['no'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
             
             GPIO.setup(self.__class__._motor_pin['pull'], GPIO.OUT)
             GPIO.setup(self.__class__._motor_pin['dir'], GPIO.OUT)
@@ -177,7 +177,7 @@ class ROOF:
                 
         self._second_sensor_reached = False    
         try:
-            self.__class__._motor.start(direction=self._direction)
+            self.__class__._motor.start(direction=self._direction) #Thread spawn
             if self._direction:
                 self.__class__._state = 2
             else:
@@ -185,7 +185,11 @@ class ROOF:
             
             while self.read_sensor(mid_sensor) != 'active':
                 if self.read_sensor(final_sensor) == 'active':
+                    # NEEDS TO BRUTALY HALTED
+                    #print("brutl needed")
+                    self.__class__._motor.halt(brutal=True)
                     self.__class__._state = 0 if self._direction else 1
+                    return
                 time.sleep(0.3)
             
             self.__class__._motor.start(direction=self._direction, min_speed=True)

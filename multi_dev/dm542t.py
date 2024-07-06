@@ -76,6 +76,9 @@ class DM542T:
             GPIO.output(self._pull, GPIO.HIGH)
             time.sleep(self._speed)
             GPIO.output(self._pull, GPIO.LOW)
+            time.sleep(self._speed)
+        
+        return
         
     def stop(self):
         
@@ -95,6 +98,7 @@ class DM542T:
             GPIO.output(self._pull, GPIO.HIGH)
             time.sleep(self._speed)
             GPIO.output(self._pull, GPIO.LOW)
+            time.sleep(self._speed)
 
         self._isMoving = False
     
@@ -118,12 +122,12 @@ class DM542T:
 #         self._isMoving = False
 #         print('stopped')
         
-    def halt(self):
+    def halt(self, brutal = False):
         if not self._isMoving:
             pass
         else:
             self._stop.set()
-            if not self._isMinSpeed:
+            if not self._isMinSpeed and not brutal:
                 self.stop()
             else:
                 self._isMinSpeed = False
@@ -148,9 +152,11 @@ class DM542T:
         
         self._stop.clear()
         thread_go.start()
-#         
-# motor_pin = {'pull': 24, 'dir': 23}
-# for key, val in motor_pin.items():
-#     GPIO.setup(val, GPIO.OUT)
-# 
-# motor = DM542T(motor_pin['pull'], motor_pin['dir'])
+        
+#
+if __name__ == '__main__':
+    motor_pin = {'pull': 24, 'dir': 23}
+    for key, val in motor_pin.items():
+        GPIO.setup(val, GPIO.OUT)
+
+    motor = DM542T(motor_pin['pull'], motor_pin['dir'])

@@ -12,6 +12,7 @@ import log
 import switchdevice
 import weatherdevice
 import ror_device
+import watcher
 
 class Footer(ctk.CTkFrame):
     def __init__(self, master):
@@ -145,7 +146,23 @@ class WeatherFrame(ctk.CTkFrame):
                 
                 
         self.master.after(int(self.wth.__class__._avperiod*1e+3), self.update_values)
+
+class Watcher(ctk.CTkFrame):
+    def __init__(self, master):
+        self.master = master
+        super().__init__(self.master)
         
+        self.wat = watcher.Watcher(self.master.logger)
+        self.grid(row=0,
+                  padx=3,
+                  pady=5,
+                  sticky="n")
+        self.text_button = "Watcher Inactive"
+        self.button = ctk.CTkButton(self, text=self.text_button, command=lambda: Thread().start())
+        self.label = ctk.CTkLabel()
+        #da finire qua
+        
+    
 class RoRFrame(ctk.CTkFrame):
     def __init__(self, master):
         self.master = master
@@ -161,10 +178,11 @@ class RoRFrame(ctk.CTkFrame):
                     self.init_state = 'CLOSE'
                 elif sensor == 'open1':
                     self.init_state = 'OPEN'
-                elif sensor == close2:
+                elif sensor == 'close2':
                     self.init_state = 'CLOSING'
-                elif sensor == open2:
+                elif sensor == 'open2':
                     self.init_state = 'OPENING'
+                break
             else:
                 self.init_state = 'UNKNOWN'
                 
@@ -196,6 +214,12 @@ class RoRFrame(ctk.CTkFrame):
             'CLOSE': ctk.CTkButton(self, text='CLOSE', command=lambda: Thread(target=self.ror.move_roof, name='close_roof', kwargs={"direction": False}).start()),
             'ABORT': ctk.CTkButton(self, text='ABORT', command=lambda: Thread(target=self.ror.abort, name='abort_movement').start())
             }
+        
+#         self.buttons = {
+#             'OPEN': ctk.CTkButton(self, text='OPEN', command=lambda: self.ror.move_roof(True)),
+#             'CLOSE': ctk.CTkButton(self, text='CLOSE', command=lambda: self.ror.move_roof(False)),
+#             'ABORT': ctk.CTkButton(self, text='ABORT', command=lambda: self.ror.abort())
+#             }
         
     def generate_buttons(self):
         for idx, val in enumerate(self.buttons.values()):
@@ -269,5 +293,5 @@ class GUI(ctk.CTk):
 pid = getpid()    
 gui = GUI()
 app.start(gui.logger)
-gui.mainloop()
+gui.mainloop() #Il problema del movimento del mototre può essere qua. Magari il main loop no va bene (thread di thread di thread)
 kill(pid, SIGKILL)
