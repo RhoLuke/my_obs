@@ -83,7 +83,7 @@ class SwitchDevice:
             7:{
                 'Name': 'Aux4',
                 'Description': 'Ancillary dev4',
-                'Switchpinout': 18,
+                'Switchpinout': 25, #18,
                 'State': False        
             },
             

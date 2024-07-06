@@ -65,7 +65,7 @@ import exceptions
 from falcon import Request, Response, App, HTTPInternalServerError
 import management
 import setup
-#import log
+import log
 from config import Config
 from discovery import DiscoveryResponder
 from shr import set_shr_logger
@@ -288,13 +288,14 @@ def main(logger):
         httpd.serve_forever()
 
 # ========================
-# try:
-#     if __name__ == '__main__':
-#         logger = log.init_logging()
-#         main(logger)
-# except KeyboardInterrupt:
-#     logger.info('Cleaning GPIO..')
-#     GPIO.cleanup()
+try:
+    if __name__ == '__main__':
+        logger = log.init_logging()
+        main(logger)
+except KeyboardInterrupt:
+    logger.info('Cleaning GPIO..')
+    GPIO.cleanup()
+
 def start(logger):
 #     logger = log.init_logging()
     threading.Thread(target=main, name='alpaca_server', kwargs={'logger': logger}).start()

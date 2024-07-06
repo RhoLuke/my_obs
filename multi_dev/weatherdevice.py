@@ -36,12 +36,14 @@ class WeatherDevice:
             self.__class__._i2c = board.I2C()
             self.__class__._dht11 = dht.DHT11(board.D17, use_pulseio=False)
             self.__class__._mlx = adafruit_mlx90614.MLX90614(self.__class__._i2c)
-        except:
+            self.__class__._rainpin = 18 #25
+            GPIO.setup(self.__class__._rainpin, GPIO.IN)
+        except Exception as e:
+            print(e)
             self.__class__._i2c = None
             self.__class__._dht11 = None
             self.__class__._mlx = None
-        self.__class__._rainpin = 25
-        GPIO.setup(25, GPIO.IN)
+        
         
         self.__class__._sensors = {
             'CloudCover':{'Description': 'Cloud sensor',
@@ -127,13 +129,14 @@ class WeatherDevice:
     def read_sensor(self) -> float:
         
         try:
+            
             temp = self.__class__._dht11.temperature
             hum = self.__class__._dht11.humidity
             t_a = self.__class__._mlx.ambient_temperature
             t_o = self.__class__._mlx.object_temperature
             k = 0.5
-
-            cl = (t_a/t_o)*k*100.0 # TODO Need to calibrate the k costant!!! 
+#             print('Readed')
+            cl = (t_a/t_o)*k*100.0 # TODO: Need to calibrate the k costant!!! 
             dw = temp - ((100.0-hum)/5.0)
             if GPIO.input(self.__class__._rainpin):
                 rn = 0.0
@@ -145,7 +148,8 @@ class WeatherDevice:
                 self.__class__._sensors[key]['Value'] = rd
             
             self.__class__._readout_time = strftime('%d-%m-%YT%H:%M:%S', localtime())
-        except:
+            
+        except Exception as e:
             pass
 
     def _loop_thread(self):
@@ -164,19 +168,3 @@ class WeatherDevice:
     def stop(self):
         self.__class__._stop.set()
         self.__class__._isOperating = False
-        
-# w = WeatherDevice(None)
-# w.start()
-# try:
-#     while True:
-#         print(f'tmeslu: {w.timeslu}'
-#               f'\ncl cover:{w.cloudcover}'
-#               f'\ndpoint: {w.dewpoint}'
-#               f'\nhumidity: {w.humidity}'
-#               f'\nsktemp: {w.skytemp}'
-#               f'\ntemperature:{w.temperature}'
-#               f'\nrainrate:{w.rainrate}\n'
-#               )
-#         sleep(3.0)
-# except KeyboardInterrupt:
-#     pass

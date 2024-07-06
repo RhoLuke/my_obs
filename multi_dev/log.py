@@ -64,14 +64,14 @@ def init_logging():
         Customized Python logger.
 
     """
-
+    log_path = "/home/piobs/work/myobs/almost/my_obs/multi_dev/logs/"
     logging.basicConfig(level=Config.log_level)
     logger = logging.getLogger()                # Root logger, see above
     formatter = logging.Formatter('%(asctime)s.%(msecs)03d %(levelname)s %(message)s', '%Y-%m-%dT%H:%M:%S')
     formatter.converter = time.gmtime           # UTC time
     logger.handlers[0].setFormatter(formatter)  # This is the stdout handler, level set above
     # Add a logfile handler, same formatter and level
-    handler = logging.handlers.RotatingFileHandler(time.strftime('%Y%m%d', time.localtime()),
+    handler = logging.handlers.RotatingFileHandler(log_path + time.strftime('%Y%m%d', time.localtime()),
                                                     mode='w',
                                                     delay=True,     # Prevent creation of empty logs
                                                     maxBytes=Config.max_size_mb * 1000000,
